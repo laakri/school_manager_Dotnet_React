@@ -1,0 +1,6 @@
+@StudentAbsenceTracker_HostAddress = http://localhost:5063
+
+GET {{StudentAbsenceTracker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
