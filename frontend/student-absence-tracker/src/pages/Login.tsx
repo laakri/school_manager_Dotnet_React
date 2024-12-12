@@ -43,35 +43,38 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-center">Teacher Login</h2>
-        {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded">{error}</div>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Username (First Name)"
-            value={formData.username}
-            onChange={(e) =>
-              setFormData({ ...formData, username: e.target.value })
-            }
-            required
-          />
-          <Input
-            label="Password (Last Name)"
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-            required
-          />
-          <Button type="submit" isLoading={isLoading} className="w-full">
-            Login
-          </Button>
-        </form>
-      </div>
+    <div className="min-h-screen bg-blue-100 flex items-center justify-center">
+    <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+      <h2 className="text-3xl text-blue-800 font-bold text-center">Login</h2>
+      {error && (
+        <div className="bg-red-100 text-red-700 p-3 rounded">{error}</div>
+      )}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          label="Username "
+          value={formData.username}
+          onChange={(e) =>
+            setFormData({ ...formData, username: e.target.value })
+          }
+          required
+        />
+        <Input
+          label="Password"
+          value={formData.password}
+          onChange={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
+          required
+          type="password"
+        />
+        <Button type="submit" isLoading={isLoading} className="w-full">
+          Login
+        </Button>
+      </form>
     </div>
+  </div>
+  
+   
   );
 };
 
