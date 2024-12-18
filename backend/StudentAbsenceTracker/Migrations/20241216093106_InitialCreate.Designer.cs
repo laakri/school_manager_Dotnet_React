@@ -12,8 +12,8 @@ using StudentAbsenceTracker.Data;
 namespace StudentAbsenceTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241210113254_AddClassToSubject")]
-    partial class AddClassToSubject
+    [Migration("20241216093106_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

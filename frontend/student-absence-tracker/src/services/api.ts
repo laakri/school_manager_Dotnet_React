@@ -70,6 +70,9 @@ const api = {
     fetchApi(`/students/${id}`, {
       method: "DELETE",
     }),
+//Dashboard
+getStatsStudent: () => fetchApi("/dashboard/stats"),
+
 
   // Classes
   getClasses: () => fetchApi("/classes"),

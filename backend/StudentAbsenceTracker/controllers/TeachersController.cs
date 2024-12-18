@@ -135,104 +135,42 @@ public class TeachersController : ControllerBase
     [HttpPost("{teacherId}/mark-absences")]
     public async Task<IActionResult> MarkAbsences(int teacherId, [FromBody] AbsenceRequest request)
     {
-        try
+        // Validate request
+        if (!request.StudentIds.Any())
         {
-            // Log the incoming request
-            _logger.LogInformation($"Marking absences for teacher {teacherId}, class {request.ClassId}, subject {request.SubjectId}");
-
-            // Validate request
-            if (request.StudentIds == null || !request.StudentIds.Any())
-            {
-                return BadRequest(new { error = "No students selected" });
-            }
-
-            // Parse classId and subjectId as integers
-            var classId = int.Parse(request.ClassId);
-            var subjectId = int.Parse(request.SubjectId);
-
-            // First check if the subject exists and belongs to this teacher
-            var subject = await _context.Subjects
-                .FirstOrDefaultAsync(s => 
-                    s.TeacherId == teacherId && 
-                    s.Id == subjectId && 
-                    s.ClassId == classId);
-
-            if (subject == null)
-            {
-                return BadRequest(new { 
-                    error = "Invalid subject-class combination",
-                    details = new {
-                        teacherId,
-                        subjectId,
-                        classId
-                    }
-                });
-            }
-
-            // Get or create TeacherSubjectClass
-            var teacherSubjectClass = await _context.TeacherSubjectClasses
-                .FirstOrDefaultAsync(tsc => 
-                    tsc.TeacherId == teacherId && 
-                    tsc.SubjectId == subjectId && 
-                    tsc.ClassId == classId);
-
-            if (teacherSubjectClass == null)
-            {
-                teacherSubjectClass = new TeacherSubjectClass
-                {
-                    TeacherId = teacherId,
-                    SubjectId = subjectId,
-                    ClassId = classId,
-                    AcademicPeriod = "2023-2024"
-                };
-                _context.TeacherSubjectClasses.Add(teacherSubjectClass);
-                await _context.SaveChangesAsync();
-            }
-
-            // Parse the date and specify UTC kind
-            if (!DateTime.TryParse(request.Date, out DateTime parsedDate))
-            {
-                return BadRequest(new { error = "Invalid date format" });
-            }
-            
-            // Convert to UTC kind
-            var absenceDate = DateTime.SpecifyKind(parsedDate, DateTimeKind.Utc);
-
-            var absences = request.StudentIds.Select(studentId => new Absence
-            {
-                Date = absenceDate,
-                Session = request.Session,
-                StudentId = studentId,
-                TeacherSubjectClassId = teacherSubjectClass.Id,
-                IsJustified = false
-            }).ToList();
-
-            try
-            {
-                _context.Absences.AddRange(absences);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception dbEx)
-            {
-                return BadRequest(new { 
-                    error = "Database error while saving absences",
-                    details = dbEx.InnerException?.Message ?? dbEx.Message
-                });
-            }
-
-            return Ok(new { 
-                message = "Absences marked successfully",
-                count = request.StudentIds.Count
-            });
+            return BadRequest("No students selected");
         }
-        catch (Exception ex)
+
+        var classId = int.Parse(request.ClassId);
+        var subjectId = int.Parse(request.SubjectId);
+
+        // Check if teacher has access to this subject-class
+        var teacherSubjectClass = await _context.TeacherSubjectClasses
+            .FirstOrDefaultAsync(tsc => 
+                tsc.TeacherId == teacherId && 
+                tsc.SubjectId == subjectId && 
+                tsc.ClassId == classId);
+
+        if (teacherSubjectClass == null)
         {
-            return BadRequest(new { 
-                error = "Failed to mark absences",
-                details = ex.Message,
-                stackTrace = ex.StackTrace
-            });
+            return BadRequest("Teacher does not have access to this subject-class combination");
         }
+
+        // Create absences
+        var absenceDate = DateTime.Parse(request.Date).ToUniversalTime();
+        var absences = request.StudentIds.Select(studentId => new Absence
+        {
+            Date = absenceDate,
+            Session = request.Session,
+            StudentId = studentId,
+            TeacherSubjectClassId = teacherSubjectClass.Id,
+            IsJustified = false
+        });
+
+        _context.Absences.AddRange(absences);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Absences marked successfully" });
     }
 
     [HttpPut("{id}")]
@@ -345,39 +283,27 @@ public class TeachersController : ControllerBase
         });
     }
 
+    // Get teacher's absences
     [HttpGet("{teacherId}/absences")]
     public async Task<ActionResult<IEnumerable<object>>> GetTeacherAbsences(int teacherId)
     {
-        try 
-        {
-            var absences = await _context.Absences
-                .Include(a => a.Student)
-                .Include(a => a.TeacherSubjectClass)
-                    .ThenInclude(tsc => tsc.Class)
-                .Include(a => a.TeacherSubjectClass)
-                    .ThenInclude(tsc => tsc.Subject)
-                .Where(a => a.TeacherSubjectClass.TeacherId == teacherId)
-                .Select(a => new
-                {
-                    id = a.Id,
-                    date = a.Date.ToString("yyyy-MM-dd"),
-                    session = a.Session,
-                    studentId = a.StudentId,
-                    studentName = $"{a.Student.FirstName} {a.Student.LastName}",
-                    subjectId = a.TeacherSubjectClass.SubjectId,
-                    subjectName = a.TeacherSubjectClass.Subject.Name,
-                    className = a.TeacherSubjectClass.Class.Name
-                })
-                .OrderByDescending(a => a.date)
-                .ToListAsync();
+        var absences = await _context.Absences
+            .Include(a => a.Student)
+            .Include(a => a.TeacherSubjectClass)
+                .ThenInclude(tsc => tsc.Subject)
+            .Where(a => a.TeacherSubjectClass.TeacherId == teacherId)
+            .Select(a => new
+            {
+                id = a.Id,
+                date = a.Date.ToString("yyyy-MM-dd"),
+                session = a.Session,
+                studentName = $"{a.Student.FirstName} {a.Student.LastName}",
+                subjectName = a.TeacherSubjectClass.Subject.Name
+            })
+            .OrderByDescending(a => a.date)
+            .ToListAsync();
 
-            return Ok(absences);
-        }
-        catch (Exception ex)
-        {
-            // Return empty list instead of error if no absences found
-            return Ok(new List<object>());
-        }
+        return Ok(absences);
     }
 
     [HttpGet("{teacherId}/debug-classes")]
@@ -457,10 +383,19 @@ public class TeachersController : ControllerBase
 
 public class AbsenceRequest
 {
+    [Required]
     public string Date { get; set; } = string.Empty;
+    
+    [Required]
     public string Session { get; set; } = string.Empty;
+    
+    [Required]
     public string ClassId { get; set; } = string.Empty;
+    
+    [Required]
     public string SubjectId { get; set; } = string.Empty;
+    
+    [Required]
     public List<int> StudentIds { get; set; } = new List<int>();
 }
 
