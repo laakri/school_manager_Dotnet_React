@@ -1,0 +1,42 @@
+\section{Implémentation du Backend}
+\label{sec:backend}
+
+Le backend du Student Absence Tracker, développé avec .NET Core, constitue le cœur du système de gestion des absences.
+
+\subsection{Structure de l'API}
+L'API REST est organisée selon une architecture modulaire :
+
+\subsubsection{Contrôleurs Principaux}
+\begin{itemize}
+    \item \texttt{TeachersController} : Gestion des enseignants et authentification
+    \item \texttt{StudentsController} : Gestion des étudiants
+    \item \texttt{ClassesController} : Gestion des classes
+    \item \texttt{SubjectsController} : Gestion des matières
+    \item \texttt{AbsencesController} : Gestion des absences
+\end{itemize}
+
+\subsection{Modèles de Données}
+\begin{itemize}
+    \item \texttt{Teacher} : Informations sur les enseignants
+    \item \texttt{Student} : Données des étudiants
+    \item \texttt{Class} : Configuration des classes
+    \item \texttt{Subject} : Définition des matières
+    \item \texttt{Absence} : Enregistrement des absences
+    \item \texttt{TeacherSubjectClass} : Relations entre enseignants, matières et classes
+\end{itemize}
+
+\subsection{Entity Framework Core}
+\begin{itemize}
+    \item Configuration du contexte de base de données
+    \item Migrations pour la gestion du schéma
+    \item Relations entre les entités
+    \item Requêtes optimisées avec LINQ
+\end{itemize}
+
+\subsection{Sécurité et Performance}
+\begin{itemize}
+    \item Authentification basée sur les noms d'utilisateur
+    \item Validation des données entrantes
+    \item Gestion des erreurs globale
+    \item Optimisation des requêtes
+\end{itemize}

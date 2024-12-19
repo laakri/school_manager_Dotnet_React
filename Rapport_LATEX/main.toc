@@ -1,0 +1,52 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Contexte du Projet}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Problématique}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Objectifs du Projet}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Portée du Projet}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Analyse des Besoins}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Besoins Fonctionnels}{5}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Gestion des Absences}{5}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Gestion des Utilisateurs}{5}{subsubsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.2}Besoins Non Fonctionnels}{5}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Performance}{5}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Sécurité}{5}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Fiabilité}{5}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}Utilisabilité}{5}{subsubsection.2.2.4}%
+\contentsline {section}{\numberline {3}Solution Proposée}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Architecture Globale}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Composants Clés}{6}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Interface Administrative}{6}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Système de Suivi des Absences}{6}{subsubsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.3}Avantages de la Solution}{6}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Conception}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Architecture Globale}{7}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Backend (.NET Core)}{7}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Frontend (React)}{7}{subsubsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.2}Modèle de Données}{7}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Implémentation du Backend}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Structure de l'API}{8}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Contrôleurs Principaux}{8}{subsubsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.2}Modèles de Données}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Entity Framework Core}{8}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Sécurité et Performance}{8}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Implémentation Frontend}{9}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Structure des Composants}{9}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Composants Réutilisables}{9}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Gestion d'État}{9}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Communication avec l'API}{9}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Tests et Validation}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Tests Backend}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Tests Frontend}{10}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Assurance Qualité}{10}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Performance}{10}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Interface Utilisateur}{11}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Page de Connexion}{11}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Tableau de Bord}{11}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Gestion des Absences}{11}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Interfaces Administratives}{11}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Responsive Design}{11}{subsection.8.5}%
+\contentsline {section}{\numberline {9}Conclusion}{12}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Réalisations}{12}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Perspectives d'Évolution}{12}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Impact et Bénéfices}{12}{subsection.9.3}%

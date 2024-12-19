@@ -285,25 +285,35 @@ public class TeachersController : ControllerBase
 
     // Get teacher's absences
     [HttpGet("{teacherId}/absences")]
-    public async Task<ActionResult<IEnumerable<object>>> GetTeacherAbsences(int teacherId)
+    public async Task<IActionResult> GetAbsences(int teacherId)
     {
-        var absences = await _context.Absences
-            .Include(a => a.Student)
-            .Include(a => a.TeacherSubjectClass)
-                .ThenInclude(tsc => tsc.Subject)
-            .Where(a => a.TeacherSubjectClass.TeacherId == teacherId)
-            .Select(a => new
+        try
+        {
+            var teacher = await _context.Teachers.FindAsync(teacherId);
+            if (teacher == null)
             {
-                id = a.Id,
-                date = a.Date.ToString("yyyy-MM-dd"),
-                session = a.Session,
-                studentName = $"{a.Student.FirstName} {a.Student.LastName}",
-                subjectName = a.TeacherSubjectClass.Subject.Name
-            })
-            .OrderByDescending(a => a.date)
-            .ToListAsync();
+                return NotFound(new { message = "Teacher not found" });
+            }
 
-        return Ok(absences);
+            var absences = await _context.Absences
+                .Include(a => a.TeacherSubjectClass)
+                .Where(a => a.TeacherSubjectClass.TeacherId == teacherId)
+                .Select(a => new
+                {
+                    studentId = a.StudentId,
+                    date = a.Date.ToString("yyyy-MM-dd"),
+                    session = a.Session,
+                    subjectId = a.TeacherSubjectClass.SubjectId
+                })
+                .ToListAsync();
+
+            return Ok(absences);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error in GetAbsences: {ex.Message}");
+            return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+        }
     }
 
     [HttpGet("{teacherId}/debug-classes")]

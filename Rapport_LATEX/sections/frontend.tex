@@ -1,0 +1,48 @@
+\section{Implémentation Frontend}
+\label{sec:frontend}
+
+Le frontend du Student Absence Tracker est développé avec React et TypeScript, offrant une interface utilisateur moderne et responsive.
+
+\subsection{Structure des Composants}
+\begin{itemize}
+    \item \textbf{Layout} : Structure globale de l'application
+    \begin{itemize}
+        \item Header : Barre de navigation supérieure
+        \item Sidebar : Menu latéral pour la navigation
+        \item Main Content : Zone principale de contenu
+    \end{itemize}
+    \item \textbf{Pages} : Composants principaux
+    \begin{itemize}
+        \item Dashboard : Vue d'ensemble
+        \item Teachers : Gestion des enseignants
+        \item Students : Gestion des étudiants
+        \item Classes : Gestion des classes
+        \item Subjects : Gestion des matières
+        \item MarkAbsences : Saisie des absences
+    \end{itemize}
+\end{itemize}
+
+\subsection{Composants Réutilisables}
+\begin{itemize}
+    \item \texttt{Button} : Boutons stylisés avec états
+    \item \texttt{Input} : Champs de saisie avec validation
+    \item \texttt{Select} : Listes déroulantes
+    \item \texttt{Table} : Tableaux de données
+    \item \texttt{Modal} : Fenêtres modales
+    \item \texttt{DatePicker} : Sélecteur de date
+\end{itemize}
+
+\subsection{Gestion d'État}
+\begin{itemize}
+    \item Context API pour l'état global
+    \item Hooks personnalisés pour la logique réutilisable
+    \item État local avec useState pour les composants
+\end{itemize}
+
+\subsection{Communication avec l'API}
+\begin{itemize}
+    \item Service API centralisé
+    \item Gestion des requêtes HTTP avec Fetch
+    \item Gestion des erreurs et chargement
+    \item Types TypeScript pour la sécurité des données
+\end{itemize}

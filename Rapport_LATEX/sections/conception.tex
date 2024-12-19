@@ -1,0 +1,32 @@
+\section{Conception}
+\label{sec:conception}
+
+\subsection{Architecture Globale}
+L'architecture du Student Absence Tracker est basée sur une approche moderne et modulaire :
+
+\subsubsection{Backend (.NET Core)}
+\begin{itemize}
+    \item API RESTful avec ASP.NET Core
+    \item Entity Framework Core pour l'ORM
+    \item Architecture en couches (Controllers, Services, Models)
+    \item Gestion des migrations de base de données
+\end{itemize}
+
+\subsubsection{Frontend (React)}
+\begin{itemize}
+    \item Interface utilisateur avec React et TypeScript
+    \item Gestion d'état avec Context API
+    \item Composants réutilisables avec Tailwind CSS
+    \item Routing avec React Router
+\end{itemize}
+
+\subsection{Modèle de Données}
+Description détaillée des entités principales :
+\begin{itemize}
+    \item Teachers (Enseignants)
+    \item Students (Étudiants)
+    \item Classes
+    \item Subjects (Matières)
+    \item Absences
+    \item TeacherSubjectClass (Relations)
+\end{itemize}

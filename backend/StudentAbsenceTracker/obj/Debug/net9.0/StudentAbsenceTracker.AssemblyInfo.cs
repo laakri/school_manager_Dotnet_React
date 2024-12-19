@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StudentAbsenceTracker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df3c47b1e44d87b7d1477280455012d29f50e871")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4eb32fdc6d00b10a013946580e0da9c1bb770397")]
 [assembly: System.Reflection.AssemblyProductAttribute("StudentAbsenceTracker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StudentAbsenceTracker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

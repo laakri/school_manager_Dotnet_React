@@ -4,7 +4,16 @@ import Table from "../components/ui/Table";
 import Button from "../components/ui/Button";
 import Select from "../components/ui/Select";
 import Input from "../components/ui/Input";
-import { DownloadIcon, Icon } from "lucide-react";
+import { DownloadIcon } from "lucide-react";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+// Déclaration de type pour jspdf-autotable
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: any) => jsPDF;
+  }
+}
 
 interface Student {
   id: number;
@@ -28,6 +37,11 @@ interface Absence {
   subjectId: number;
 }
 
+interface AbsentStudent extends Student {
+  className: string;
+  date: string;
+}
+
 const MarkAbsences = () => { 
   const [students, setStudents] = useState<Student[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -37,7 +51,7 @@ const MarkAbsences = () => {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [session, setSession] = useState("Morning");
   const [existingAbsences, setExistingAbsences] = useState<Absence[]>([]);
-  const [absentList, setAbsentList] = useState<Student[]>([]);
+  const [absentList, setAbsentList] = useState<AbsentStudent[]>([]);
   const teacher = JSON.parse(localStorage.getItem("teacher") || "{}");
   const [selectedListSession, setSelectedListSession] = useState("Morning");
 
@@ -80,9 +94,20 @@ const MarkAbsences = () => {
   useEffect(() => {
     const fetchAbsences = async () => {
       try {
+        if (!teacher.id) {
+          console.log("No teacher ID found");
+          return;
+        }
+
         const response = await fetch(
           `http://localhost:5063/api/teachers/${teacher.id}/absences`
         );
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => null);
+          throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
         setExistingAbsences(data);
         
@@ -99,10 +124,13 @@ const MarkAbsences = () => {
         }
       } catch (error) {
         console.error("Error fetching absences:", error);
+        // Optionally show error to user
+        // alert("Failed to fetch absences. Please try again later.");
       }
     };
+
     fetchAbsences();
-  }, [date, session, selectedSubject]);
+  }, [date, session, selectedSubject, teacher.id]);
 
   // Modify the useEffect for fetching students
   useEffect(() => {
@@ -263,7 +291,7 @@ const MarkAbsences = () => {
 
   useEffect(() => {
     const absenceRecords = getAbsenceListFromStorage(selectedListSession);
-    const formattedList = absenceRecords.flatMap((record: any) => 
+    const formattedList: AbsentStudent[] = absenceRecords.flatMap((record: any) => 
       record.students.map((student: any) => ({
         ...student,
         className: subjects.find(s => s.subjectId.toString() === record.subjectId)
@@ -274,6 +302,57 @@ const MarkAbsences = () => {
     );
     setAbsentList(formattedList);
   }, [selectedListSession, subjects]);
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    
+    // Ajout du titre
+    doc.setFontSize(16);
+    doc.text(`Liste des absences - Session ${selectedListSession}`, 14, 15);
+    doc.setFontSize(12);
+    doc.text(`Date d'édition: ${new Date().toLocaleDateString()}`, 14, 25);
+
+    // Préparation des données pour le tableau
+    const tableData = absentList.map(student => [
+      student.firstName,
+      student.lastName,
+      student.className,
+      student.date
+    ]);
+
+    // Création du tableau
+    doc.autoTable({
+      startY: 35,
+      head: [['Prénom', 'Nom', 'Classe', 'Date']],
+      body: tableData,
+      styles: {
+        fontSize: 10,
+        cellPadding: 3,
+      },
+      headStyles: {
+        fillColor: [66, 66, 66],
+        textColor: 255,
+        fontSize: 10,
+        fontStyle: 'bold',
+      },
+    });
+
+    // Générer le PDF en base64 avec le type MIME correct
+    const pdfContent = `data:application/pdf;base64,${btoa(doc.output('datauristring'))}`;
+    
+    const pdfRecord = {
+      teacherId: teacher.id,
+      teacherName: `${teacher.firstName} ${teacher.lastName}`,
+      session: selectedListSession,
+      date: new Date().toISOString(),
+      fileName: `absences_${selectedListSession.toLowerCase()}_${new Date().toISOString().split('T')[0]}.pdf`,
+      studentCount: absentList.length,
+      pdfContent: doc.output('datauristring') // Stocker le contenu brut
+    };
+
+    // Téléchargement du PDF
+    doc.save(`absences_${selectedListSession.toLowerCase()}_${new Date().toISOString().split('T')[0]}.pdf`);
+  };
 
   return (
     <Layout>
@@ -350,7 +429,7 @@ const MarkAbsences = () => {
                 ]}
               />
               
-              <Button className="h-fit" type="submit">
+              <Button className="h-fit" onClick={downloadPDF} type="button">
                 <DownloadIcon />
                 Download
               </Button>

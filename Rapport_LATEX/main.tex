@@ -1,0 +1,99 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{titling}
+\usepackage{abstract}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+% Set page geometry
+\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% Title page styling
+\pretitle{%
+  \begin{center}
+  \LARGE\bfseries
+  \vspace{2cm}
+}
+\posttitle{\end{center}}
+
+\preauthor{%
+  \begin{center}
+  \large
+}
+\postauthor{\end{center}}
+
+\predate{%
+  \begin{center}
+  \large
+}
+\postdate{\end{center}}
+
+\title{\Huge\textbf{Student Absence Tracker}}
+\author{\Large Saqdqdidf Eddine Jlassi \\ \Large Chaima Zbedi}
+\date{\today}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\begin{document}
+
+% Custom title page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    {\Huge\bfseries Student Absence Tracker\par}
+    \vspace{1cm}
+    {\Large Application de Gestion des Absences avec .NET et React\par}
+    \vspace{2cm}
+    
+    % You can add a logo or image here
+    % \includegraphics[width=0.4\textwidth]{path/to/your/logo.png}
+    
+    \vspace{2cm}
+    {\Large Saif Eddine Jlassi\par}
+    {\Large Chaima Zbedi\par}
+    \vspace{0.5cm}
+    {\large INFO 3\par}
+    \vfill
+    {\large \today\par}
+\end{titlepage}
+
+\newpage
+\input{sections/resume}
+
+\newpage
+\tableofcontents
+
+\newpage
+\input{sections/introduction}
+\newpage
+\input{sections/analyse_des_besoins}
+\newpage
+\input{sections/solution_proposee}
+\newpage
+\input{sections/conception}
+\newpage
+\input{sections/backend}
+\newpage
+\input{sections/frontend}
+\newpage
+\input{sections/tests_et_validation}
+\newpage
+\input{sections/interface_utilisateur}
+\newpage
+\input{sections/conclusion}
+
+% \newpage
+% \bibliographystyle{plain}
+% \bibliography{bibliography}
+
+\end{document}
